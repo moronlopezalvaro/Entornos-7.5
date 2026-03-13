@@ -120,3 +120,20 @@ CheckedIn --> [*]
 NotShownUp --> [*]
 Cancelled --> [*]
 ```
+
+## Fase 5: Diagrama de Estados
+``` mermaid
+stateDiagram-v2
+[*] --> Pending : create()
+
+Pending --> Confirmed : confirm()
+Pending --> Cancelled : cancel()
+
+Confirmed --> Cancelled : cancel()
+Confirmed --> Completed : checkIn()
+Confirmed --> NoShow : missClass()
+
+Cancelled --> [*]
+Completed --> [*]
+NoShow --> [*]
+```
