@@ -52,7 +52,7 @@ deactivate Database
 ReservationManager-->>WebInterface: reservationData
 deactivate ReservationManager
 
-%% Condiciones según el resultado de buscar en la Base de Datos
+%% Condiciones segun el resultado de buscar en la Base de Datos
 alt isAvailable
 WebInterface -->>Member: reservationAvailable
 else isNotAvailable
@@ -61,11 +61,10 @@ end
 deactivate WebInterface
 ```
 
-Diagrama de Comunicación
+### Diagrama de Comunicación
 ``` mermaid
 graph LR
 Member((:Member))
-%% El Socio hace la petición a la Web de Reservas
 -- "1: selectConfirmReservation"
 --> WebInterface((:WebInterface))
 WebInterface
@@ -74,4 +73,27 @@ WebInterface
 Manager
 -- "2: getData()"
 --> Database((:Database))
+```
+
+# Fase 3: Lógica del Proceso
+``` mermaid
+stateDiagram-v2
+%% Valida la reserva
+[*] --> ReceiveRequest
+%% Recibe la peticion y revisa los datos
+ReceiveRequest --> CheckMemberData
+%% Si tiene la cuota pagada (o no) decide la siguiente accion
+state check_fee <<choice>>
+CheckMemberData --> check_fee
+check_fee --> ProcessReservation: [fee paid]
+check_fee --> NotifyReservationIneligible: [fee not paid]
+%% Si el socio ha pagado revisa el aforo
+state check_capacity <<choice>>
+ProcessReservation --> check_capacity
+check_capacity --> AssignPlace: [capacity not full]
+check_capacity --> NotifyNoPlaceAvailable : [full capacity]
+%% Si hay aforo reserva la plaza
+AssignPlace --> EmailConfirm: [place assigned]
+%% Envia email
+EmailConfirm --> [*]
 ```
