@@ -28,6 +28,7 @@ Admin --- CU5
 ```
 
 # Fase 2: Diseño de la Interacción
+### Diagrama de Secuencia
 ``` mermaid
 sequenceDiagram
 %% Numerado automatico para mejor seguimiento
@@ -58,4 +59,19 @@ else isNotAvailable
 WebInterface-->>Member: reservationUnavailable
 end
 deactivate WebInterface
+```
+
+Diagrama de Comunicación
+``` mermaid
+graph LR
+Member((:Member))
+%% El Socio hace la petición a la Web de Reservas
+-- "1: selectConfirmReservation"
+--> WebInterface((:WebInterface))
+WebInterface
+-- "1.1: openReservationManager()"
+--> Manager((:ReservationManager))
+Manager
+-- "2: getData()"
+--> Database((:Database))
 ```
