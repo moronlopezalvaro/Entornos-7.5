@@ -26,3 +26,36 @@ Member --- CU1
 Admin --- CU4
 Admin --- CU5
 ```
+
+# Fase 2: Diseño de la Interacción
+``` mermaid
+sequenceDiagram
+%% Numerado automatico para mejor seguimiento
+autonumber
+
+%% Actores y Participantes
+actor Member 
+participant WebInterface
+participant ReservationManager
+participant Database
+
+%% Definir flujo
+Member->>WebInterface: selectConfirmReservation
+activate WebInterface
+WebInterface->>ReservationManager: openManager
+activate ReservationManager
+ReservationManager->>Database: getData()
+activate Database
+Database-->>ReservationManager: retrieveData
+deactivate Database
+ReservationManager-->>WebInterface: reservationData
+deactivate ReservationManager
+
+%% Condiciones según el resultado de buscar en la Base de Datos
+alt isAvailable
+WebInterface -->>Member: reservationAvailable
+else isNotAvailable
+WebInterface-->>Member: reservationUnavailable
+end
+deactivate WebInterface
+```
