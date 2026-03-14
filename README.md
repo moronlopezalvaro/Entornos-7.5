@@ -100,7 +100,6 @@ EmailConfirm --> [*]
 
 ## Fase 4: Ciclo de Vida del Objeto
 ``` mermaid
-Diagrama de Estados
 stateDiagram-v2
 %% Draft: Está creada o creándose
 [*] --> Draft
